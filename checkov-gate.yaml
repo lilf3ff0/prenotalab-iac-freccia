@@ -1,0 +1,15 @@
+# checkov-gate.yaml - configurazione del GATE usato dalla pipeline.
+# Il gate controlla SOLO le regole che l'azienda ha deciso di rendere
+# bloccanti. Il resto dei controlli di checkov e' un AUDIT: lo si lancia
+# a mano (checkov -d .) e si legge, ma non ferma il merge.
+compact: true
+quiet: true
+framework:
+  - terraform
+external-checks-dir:
+  - policies
+check:
+  - CKV_PRENOTA_TAGS # standard aziendale: tag di progetto, proprietario e costo
+  - CKV_PRENOTA_SIZE # standard aziendale: solo taglie economiche
+  - CKV_AWS_24       # nessun SSH aperto al mondo
+  - CKV_AWS_25       # nessun RDP aperto al mondo

@@ -1,0 +1,28 @@
+# ==============================================================
+# TODO GIT (FASE 0) - questo .gitignore e' incompleto.
+#   Oggi esclude solo la cartella di lavoro di Terraform. Aggiungi
+#   le righe che servono perche' NON finiscano mai nel repository:
+#   lo state (e i suoi backup), i file di variabili, gli override
+#   locali e i log di crash. Il lockfile dei provider invece si
+#   committa: assicurati che resti incluso.
+# ==============================================================
+**/.terraform/*
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Variable files
+*.tfvars
+*.tfvars.json
+
+# Local overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Crash logs
+crash.log
+crash.*.log

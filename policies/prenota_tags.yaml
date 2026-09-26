@@ -1,0 +1,18 @@
+metadata:
+  id: "CKV_PRENOTA_TAGS"
+  name: "Bucket e istanze devono avere i tag Project, Owner e CostCenter"
+  category: "CONVENTION"
+definition:
+  and:
+    - cond_type: "attribute"
+      resource_types: ["aws_s3_bucket", "aws_instance"]
+      attribute: "tags.Project"
+      operator: "exists"
+    - cond_type: "attribute"
+      resource_types: ["aws_s3_bucket", "aws_instance"]
+      attribute: "tags.Owner"
+      operator: "exists"
+    - cond_type: "attribute"
+      resource_types: ["aws_s3_bucket", "aws_instance"]
+      attribute: "tags.CostCenter"
+      operator: "exists"

@@ -1,0 +1,18 @@
+# ==============================================================
+# TODO POLICY (FASE 3) - completa questa policy custom.
+#   Deve far FALLIRE ogni aws_instance il cui instance_type non sia
+#   fra le taglie approvate: t3.micro e t3.small.
+#   Suggerimento: cond_type "attribute", l'operatore giusto e' quello
+#   che controlla che un valore stia DENTRO una lista.
+# ==============================================================
+metadata:
+  id: "CKV_PRENOTA_SIZE"
+  name: "Le istanze EC2 possono usare solo le taglie approvate t3.micro e t3.small"
+  category: "CONVENTION"
+definition:
+  cond_type: "attribute"
+  resource_types:
+    - "aws_instance"
+  attribute: "instance_type"
+  operator: "exists" # TODO - sostituisci con l'operatore giusto
+  # value:           # TODO - la lista delle taglie approvate
