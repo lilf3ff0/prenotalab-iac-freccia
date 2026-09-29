@@ -95,7 +95,7 @@ resource "aws_security_group" "portale" {
   })
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "portale" {
   ami           = data.aws_ami.al2023.id
   instance_type = local.taglie[var.env] # TODO 3 - usa la mappa local.taglie
 
@@ -111,6 +111,7 @@ resource "aws_instance" "web" {
 
   tags = merge(local.common_tags, {
     Name = "prenotalab-portale-${var.matricola}"
+    Referente = "segreteria-didattica"
   })
 }
 
@@ -136,4 +137,9 @@ module "bucket" {
   cost_center = var.cost_center
   matricola   = var.matricola
   versioning  = each.value.versioning
+}
+
+moved {
+  from = aws_instance.web
+  to   = aws_instance.portale
 }

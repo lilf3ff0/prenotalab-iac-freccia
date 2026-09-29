@@ -4,7 +4,7 @@
 # ==============================================================
 output "url_portale" {
   description = "Indirizzo del portale PrenotaLab"
-  value       = "http://${aws_instance.web.public_ip}"
+  value       = "http://${aws_instance.portale.public_ip}"
 }
 
 # ==============================================================
@@ -24,5 +24,5 @@ output "sg_id" {
 
 output "instance_id" {
   description = "ID dell'istanza del portale"
-  value       = aws_instance.web.id
+  value       = aws_instance.portale.id
 }
