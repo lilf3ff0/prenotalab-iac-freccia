@@ -1,0 +1,19 @@
+R1 - Risorse create = 14, instance_id = "i-0f61f8e53cd54b99b", sg_id = "sg-00ef780052c874295", state list = 16 righe.
+R2 - Il plan proponeva di rimuovere emtrambi il tag e la porta 8080, abbiamo deciso di tenere solo il tag perche il cliente lo vuole tenere nella configurazione finale.
+R3 - Senza blocco MOVED il plan mi distrugge la vecchia istanza .web e mi crea quella nuova .portale, con il blocco MOVED invece 0 to add, la differenza conta perche così preservo la istanza già creata, segnalando a terraform il cambio nome.
+R4 - Cambiamo la configurazione da dev a prod= Plan: 13 to add, 2 to change, 13 to destroy. il rischio per il cliente è solo il prestare attenzione all'ambiente in uso.
+R5 - Check: CKV_AWS_18: "Ensure the S3 bucket has access logging enabled"
+        FAILED for resource: module.bucket["report"].aws_s3_bucket.this
+        File: \modules\bucket-standard\main.tf:18-21
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging
+
+                18 | resource "aws_s3_bucket" "this" {
+                19 |   bucket = local.nome
+                20 |   tags   = local.tags
+                21 | }
+in un contesto di labolatorio è accettabile per ridurre la complessità, ma in produzione è indispensabili hai fini della sicurezza.
+gate è un controllo automatizzato della pipeline basato sulle regole aziendali.
+R6 - Link Repository: https://github.com/lilf3ff0/prenotalab-iac-freccia
+Link PR verde unita: https://github.com/lilf3ff0/prenotalab-iac-freccia/pull/3
+Link PR rossa chiusa: https://github.com/lilf3ff0/prenotalab-iac-freccia/pull/3
+Numero risorse distrutte dal destroy: 15
