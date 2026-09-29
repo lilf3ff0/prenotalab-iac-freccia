@@ -35,9 +35,9 @@ run "il_nome_segue_lo_schema" {
 #   Suggerimento: versioning_configuration e' un blocco, quindi si
 #   legge con versioning_configuration[0].status
 # ==============================================================
-run "versioning_acceso_se_richiesto" { 
+run "versioning_acceso_se_richiesto" {
   command = plan
-  
+
   variables {
     versioning = true
   }

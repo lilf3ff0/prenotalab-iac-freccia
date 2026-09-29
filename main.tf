@@ -110,7 +110,7 @@ resource "aws_instance" "portale" {
   EOT
 
   tags = merge(local.common_tags, {
-    Name = "prenotalab-portale-${var.matricola}"
+    Name      = "prenotalab-portale-${var.matricola}"
     Referente = "segreteria-didattica"
   })
 }
