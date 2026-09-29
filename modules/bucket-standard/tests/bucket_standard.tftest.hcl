@@ -35,9 +35,34 @@ run "il_nome_segue_lo_schema" {
 #   Suggerimento: versioning_configuration e' un blocco, quindi si
 #   legge con versioning_configuration[0].status
 # ==============================================================
+run "versioning_acceso_se_richiesto" { 
+  command = plan
+  
+  variables {
+    versioning = true
+  }
+
+  assert {
+    condition     = aws_s3_bucket_versioning.this.versioning_configuration[0].status == "Enabled"
+    error_message = "In dev, se versioning = true, lo status deve essere Enabled."
+  }
+}
 
 # ==============================================================
 # TODO TEST 2 (FASE 3) - scrivi un run "in_prod_versioning_sempre_acceso"
 #   che, con env = "prod" e versioning = false, verifichi che lo
 #   status sia comunque "Enabled": in prod lo standard lo impone.
 # ==============================================================
+run "in_prod_versioning_sempre_acceso" {
+  command = plan
+
+  variables {
+    env        = "prod"
+    versioning = false
+  }
+
+  assert {
+    condition     = aws_s3_bucket_versioning.this.versioning_configuration[0].status == "Enabled"
+    error_message = "In prod, anche se versioning = false, lo status deve essere Enabled."
+  }
+}
