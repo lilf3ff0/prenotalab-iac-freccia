@@ -14,5 +14,5 @@ definition:
   resource_types:
     - "aws_instance"
   attribute: "instance_type"
-  operator: "exists" # TODO - sostituisci con l'operatore giusto
-  # value:           # TODO - la lista delle taglie approvate
+  operator: "in" # TODO - sostituisci con l'operatore giusto
+  value: ["t3.micro", "t3.small"] # TODO - la lista delle taglie approvate

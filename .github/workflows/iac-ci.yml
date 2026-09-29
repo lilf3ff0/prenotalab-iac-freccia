@@ -8,8 +8,11 @@ name: PrenotaLab IaC gate
 
 # TODO CI-1 - il workflow deve partire a ogni pull request verso main.
 #   Oggi parte solo a mano: sostituisci il trigger.
+
 on:
-  workflow_dispatch: {}
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -30,18 +33,23 @@ jobs:
       # TODO CI-2 - controlla la formattazione di TUTTE le cartelle,
       #   senza riscrivere i file: se non e' formattato, il job fallisce.
       - name: Formattazione
-        run: echo "TODO CI-2"
+        run: terraform fmt -check -recursive
+
 
       # TODO CI-3 - inizializza SENZA backend e senza domande interattive,
       #   poi valida la configurazione (due step, o due righe).
       - name: Init e validate
-        run: echo "TODO CI-3"
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
 
       # TODO CI-4 - lancia i test del modulo bucket-standard.
       #   Attenzione alla cartella: i test stanno dentro il modulo, e anche
       #   li' serve un init senza backend prima del test.
       - name: Test del modulo bucket-standard
-        run: echo "TODO CI-4"
+        run: |
+          terraform -chdir=modules/bucket-standard init -backend=false -input=false
+          terraform -chdir=modules/bucket-standard test
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -51,4 +59,7 @@ jobs:
       # TODO CI-5 - installa checkov e lancialo sulla cartella usando il
       #   file di configurazione del gate (checkov-gate.yaml).
       - name: Policy as code (checkov, gate)
-        run: echo "TODO CI-5"
+        run: |
+          python -m pip install --upgrade pip
+          pip install checkov
+          checkov -d . --config-file checkov-gate.yaml

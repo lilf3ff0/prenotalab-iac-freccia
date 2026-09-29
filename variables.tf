@@ -8,6 +8,10 @@ variable "matricola" {
   #   in minuscolo: lettere da a a z, da 3 a 20 caratteri, niente
   #   cifre, spazi o maiuscole. Scrivi un error_message chiaro.
   # ============================================================
+  validation {
+    condition     = can(regex("^[a-z]{3,20}$", var.matricola))
+    error_message = "Il cognome deve essere in minuscolo, senza spazi ne' cifre, da 3 a 20 caratteri."
+  }
 }
 
 variable "env" {

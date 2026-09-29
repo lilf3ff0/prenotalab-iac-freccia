@@ -74,6 +74,13 @@ resource "aws_security_group" "portale" {
   #   0.0.0.0/0, con una description sensata. Nient'altro:
   #   niente SSH, niente RDP.
   # ============================================================
+  ingress {
+    description = "Traffico web in entrata"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   egress {
     description = "Tutto in uscita"
@@ -88,9 +95,9 @@ resource "aws_security_group" "portale" {
   })
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "portale" {
   ami           = data.aws_ami.al2023.id
-  instance_type = "t3.micro" # TODO 3 - usa la mappa local.taglie
+  instance_type = local.taglie[var.env] # TODO 3 - usa la mappa local.taglie
 
   vpc_security_group_ids = [aws_security_group.portale.id]
 
@@ -103,7 +110,8 @@ resource "aws_instance" "web" {
   EOT
 
   tags = merge(local.common_tags, {
-    Name = "prenotalab-portale-${var.matricola}"
+    Name      = "prenotalab-portale-${var.matricola}"
+    Referente = "segreteria-didattica"
   })
 }
 
@@ -119,3 +127,19 @@ resource "aws_instance" "web" {
 #   ciclando sulla mappa local.bucket (niente copia-incolla).
 #   L'output a mappa va completato in outputs.tf.
 # ==============================================================
+module "bucket" {
+  source = "./modules/bucket-standard"
+
+  for_each = local.bucket
+
+  ruolo       = each.key
+  env         = var.env
+  cost_center = var.cost_center
+  matricola   = var.matricola
+  versioning  = each.value.versioning
+}
+
+moved {
+  from = aws_instance.web
+  to   = aws_instance.portale
+}

@@ -4,7 +4,7 @@
 # ==============================================================
 output "url_portale" {
   description = "Indirizzo del portale PrenotaLab"
-  value       = "DA COMPLETARE"
+  value       = "http://${aws_instance.portale.public_ip}"
 }
 
 # ==============================================================
@@ -12,10 +12,10 @@ output "url_portale" {
 #   deve restituire una mappa ruolo => nome del bucket, per esempio
 #   { log = "prenotalab-rossi-log-dev", ... }
 # ==============================================================
-# output "bucket_per_ruolo" {
-#   description = "Mappa ruolo => nome del bucket"
-#   value       = ...
-# }
+output "bucket_per_ruolo" {
+  description = "Mappa ruolo => nome del bucket"
+  value       = { for ruolo, impostazioni in local.bucket : ruolo => "prenotalab-${var.matricola}-${ruolo}-${var.env}" }
+}
 
 output "sg_id" {
   description = "ID del security group del portale"
@@ -24,5 +24,5 @@ output "sg_id" {
 
 output "instance_id" {
   description = "ID dell'istanza del portale"
-  value       = aws_instance.web.id
+  value       = aws_instance.portale.id
 }
