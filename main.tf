@@ -43,7 +43,7 @@ data "aws_vpc" "default" {
 locals {
   # taglie approvate per ambiente (gia' pronta: usala nel TODO 3)
   taglie = {
-    dev  = "t3.micro"
+    dev  = "t3.large"
     prod = "t3.small"
   }
 
